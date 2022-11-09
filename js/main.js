@@ -57,43 +57,53 @@ const posts = [
     }
 ];
 
-const postContainer = document.querySelector(".post");
+const postsLiked =[];
+/*--------------------------
+        FUNCTIONS
+---------------------------*/
 
-for(let i=0; i<posts.length; i++){
+function onClickLikeButton(event){
+    event.preventDefault();
+    this.classList.add("like-button--liked");
+    const postID = this.getAttribute("data-postid");
+    const postLikes = document.querySelector(`#like-counter-${postID}`);
+    postLikes.innerHTML = Number(postLikes.innerHTML) + 1;
+    postsLiked.push(postID);
+    
+}
+const postsContainer = document.getElementById("container");
 
-    const currentPost = posts[i];
+for(let i=0; i<posts.length; i++) {
 
-    const post = `
-    <div class="post__header post-meta post-meta__data">
-        <div class="post-meta__data">${currentPost.created}</div>
-        <div class="author-name post__text"> <span>${currentPost.author.name}</span> </div>
-        <div class="author-image profile-pic profile-pic-default post__text"><img src=${currentPost.author.image} alt=""></div>
-        <div class="post__text"> ${currentPost.content}</div>
-        <div class="post__image post__image ">
-            <img src=${currentPost.media} alt="">
-        </div>
-    </div>
-    <div class="post__footer">
-        <div class="likes js-likes">
-            <div class="likes__cta">
-                <a class="like-button  js-like-button" href="#" data-postid="${currentPost.id}">
-                    <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
-                    <span class="like-button__label">Mi Piace</span>
-                </a>
-            </div>
-            <div class="likes__counter">
-                Piace a <b id="like-counter-1" class="js-likes-counter">${currentPost.likes}</b> persone
-            </div>
-        </div> 
-    </div>
-    `;
-    postContainer.innerHTML += post;
+    const post = post[i];
+
+    const template = document.getElementById("post-template").content.cloneNode(true);
+
+
+    template.querySelector(".profile-pic").src = post.author.image;
+    template.querySelector(".profile-pic").alt = post.author.name;
+
+    template.querySelector(".post-meta__author").innerHTML = post.author.name;
+    template.querySelector(".post-meta__time").innerHTML = post.created;
+
+    template.querySelector(".post__text").innerHTML = post.content;
+
+    template.querySelector(".post__image > img").src = post.media;
+
+    template.querySelector(".js-like-button").addEventListener("click", onClickLikeButton);
+
+    template.querySelector(".js-like-button").setAttribute("data-postid", post.id);
+
+    template.querySelector(".js-like-counter").innerHTML = post.likes;
+
+    postsContainer.append(template);
+
+
+
+
+
+
+    
+    
 }
 
-const likeButton = document.querySelector(".like-button");
-likeButton.addEventListener("click", function(){
-    const liked = document.querySelector(".js-like-button");
-    liked.classList.add("like-button--liked");
-    const likeCounter = document.querySelector(".js-likes-counter");
-    likeCounter.innerHTML = `${posts[id].likes+1}`;
-});
