@@ -75,7 +75,7 @@ const postsContainer = document.getElementById("container");
 
 for(let i=0; i<posts.length; i++) {
 
-    const post = post[i];
+    const post = posts[i];
 
     const template = document.getElementById("post-template").content.cloneNode(true);
 
@@ -94,16 +94,10 @@ for(let i=0; i<posts.length; i++) {
 
     template.querySelector(".js-like-button").setAttribute("data-postid", post.id);
 
-    template.querySelector(".js-like-counter").innerHTML = post.likes;
+    template.querySelector(".js-likes-counter").innerHTML = post.likes;
+    template.querySelector(".js-likes-counter").id = `like-counter-${post.id}`;
 
     postsContainer.append(template);
-
-
-
-
-
-
-    
     
 }
 
